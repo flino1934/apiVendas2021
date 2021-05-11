@@ -22,25 +22,38 @@ public class VendasApplication {
 		return args ->{
 			
 			System.out.println("========= Salvando clientes! =========");
-			clientesRepository.salvar(new Cliente( "Felipe Lino"));
-			clientesRepository.salvar(new Cliente( "Sarah Lino"));
+			clientesRepository.save(new Cliente( "Felipe Lino"));
+			clientesRepository.save(new Cliente( "Sarah Lino"));
 		
 			System.out.println("Todos Clientes ============");
-			List<Cliente> todosClientes = clientesRepository.obterTodos();
+			List<Cliente> todosClientes = clientesRepository.findAll();
 			todosClientes.forEach(System.out::println);
 			
 			System.out.println("========== Update Cliente ========");
 			todosClientes.forEach(c ->{//entende que o cliente vai ser nomeado de c pois ele chama a lista de cliente como ("todosClientes") que é do tipo Cliente
 				c.setNome(c.getNome() + " atualizado");
-				clientesRepository.atualizar(c);
+				clientesRepository.save(c);
 			});
 			
 			System.out.println("======== Mostrar todos ==========");
-			todosClientes = clientesRepository.obterTodos();// estou falando que todosClientes vai receber o metodo obterTodos que é do tipo lista asssim como todosClientes
+			todosClientes = clientesRepository.findAll();// estou falando que todosClientes vai receber o metodo obterTodos que é do tipo lista asssim como todosClientes
 			todosClientes.forEach(System.out::println);
 			
 			System.out.println("====== Buscando Cliente ==========");
-			clientesRepository.buscarPorNome("Fel").forEach(System.out::println);
+			clientesRepository.findByNomeLike("Fel").forEach(System.out::println);
+			
+			System.out.println("========== Deletando Clientes ==============");
+			clientesRepository.findAll().forEach(c ->{
+				clientesRepository.delete(c);
+			});
+			
+			todosClientes = clientesRepository.findAll();
+			
+			if (todosClientes.isEmpty()) {
+				System.out.println("Nenhum cliente Encontrado");
+			}else {
+				todosClientes.forEach(System.out::println);
+			}
 			
 		};
 		

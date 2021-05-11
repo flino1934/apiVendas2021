@@ -15,20 +15,19 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	@Column(name = "nome", length = 100)
-	private String name;
+	private String nome;
 
 	public Cliente() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(String name) {
-		this.name = name;
+	public Cliente(Integer id, String nome) {
+		this.id = id;
+		this.nome = nome;
 	}
 
-	public Cliente(Integer id, String name) {
-
-		this.id = id;
-		this.name = name;
+	public Cliente(String nome) {
+		this.nome = nome;
 	}
 
 	public Integer getId() {
@@ -39,12 +38,17 @@ public class Cliente {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + "]";
 	}
 
 }

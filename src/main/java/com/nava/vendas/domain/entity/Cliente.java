@@ -14,11 +14,15 @@ public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	@Column(name = "nome",length = 100)
+	@Column(name = "nome", length = 100)
 	private String name;
 
 	public Cliente() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Cliente(String name) {
+		this.name = name;
 	}
 
 	public Cliente(Integer id, String name) {

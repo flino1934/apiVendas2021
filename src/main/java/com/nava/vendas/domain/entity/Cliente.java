@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_cliente")
 public class Cliente {
@@ -23,7 +25,7 @@ public class Cliente {
 	
 	
 	@OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY)//Relacionamento um para muitos pois um cliente tem varios pedidos (1*n)
-	//@JsonIgnore será que eu tinha acertado
+	@JsonIgnore// Ganhei um lanchinho
 	private Set<Pedido> pedido;//por não poder repetir o pedido utilizamos a coleção set que não permite repetição
 
 	public Cliente() {

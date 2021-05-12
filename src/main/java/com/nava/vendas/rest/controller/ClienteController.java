@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,14 @@ public class ClienteController {
 		}
 		
 
+	}
+	
+	@PostMapping
+	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente){//esta anotado com requestBody pois ele vai receber parametros pelo corpo da requisição
+		
+		Cliente clieenteSalvo = clienteRepository.save(cliente);//acessou o repositorio e persistiu na BD
+		return ResponseEntity.ok(clieenteSalvo);
+		
 	}
 
 }

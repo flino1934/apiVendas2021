@@ -23,6 +23,7 @@ public class Cliente {
 	
 	
 	@OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY)//Relacionamento um para muitos pois um cliente tem varios pedidos (1*n)
+	//@JsonIgnore será que eu tinha acertado
 	private Set<Pedido> pedido;//por não poder repetir o pedido utilizamos a coleção set que não permite repetição
 
 	public Cliente() {

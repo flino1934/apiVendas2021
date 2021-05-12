@@ -1,10 +1,14 @@
 package com.nava.vendas.domain.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +20,10 @@ public class Cliente {
 	private Integer id;
 	@Column(name = "nome", length = 100)
 	private String nome;
+	
+	
+	@OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY)//Relacionamento um para muitos pois um cliente tem varios pedidos (1*n)
+	private Set<Pedido> pedido;//por não poder repetir o pedido utilizamos a coleção set que não permite repetição
 
 	public Cliente() {
 		// TODO Auto-generated constructor stub
@@ -44,6 +52,14 @@ public class Cliente {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Set<Pedido> getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Set<Pedido> pedido) {
+		this.pedido = pedido;
 	}
 
 	@Override

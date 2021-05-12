@@ -2,10 +2,22 @@ package com.nava.vendas.domain.entity;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_produto")
 public class Produto {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String descricao;
+	@Column(name = "preco_unitario")
 	private BigDecimal preco;
 	
 	public Produto() {

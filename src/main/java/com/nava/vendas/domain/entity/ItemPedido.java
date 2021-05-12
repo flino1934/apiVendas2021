@@ -1,10 +1,29 @@
 package com.nava.vendas.domain.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_item_pedido")
 public class ItemPedido {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@ManyToOne//Muitos itens de pedido para um pedido
+	@JoinColumn(name = "pedido_id")
 	private Pedido pedido;
+	
+	@ManyToOne
+	@JoinColumn(name = "produto_id")
 	private Produto produto;
+	
 	private Integer quantidade;
 
 	public ItemPedido() {

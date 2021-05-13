@@ -80,7 +80,7 @@ public class ProdutoController {
 	}
 	
 	@GetMapping
-	public List<Cliente> find( Produto filtro) {
+	public List<Produto> find( Produto filtro) {
 		
 		ExampleMatcher matcher = ExampleMatcher
 									.matching()

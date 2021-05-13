@@ -65,7 +65,7 @@ public class ClienteController {
     }
 	
 	@PutMapping("/{id}")
-	 @ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updateCliente(@RequestBody Cliente cliente, 
 												@PathVariable("id") Integer id){
 		

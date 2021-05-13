@@ -31,16 +31,16 @@ public class ClienteController {
 		this.clienteRepository = clienteRepository;
 	}
 
-//	@GetMapping("/{id}")
-//	public Cliente getClienteById( @PathVariable("id") Integer id) {
-//
-//		return clienteRepository
-//					.findById(id)
-//					.orElseThrow(() -> 
-//					 new ResponseStatusException(HttpStatus.NOT_FOUND,
-//                             "Cliente não encontrado"));
-//
-//	}
+	@GetMapping("/{id}")
+	public Cliente getClienteById( @PathVariable("id") Integer id) {
+
+		return clienteRepository
+					.findById(id)
+					.orElseThrow(() -> 
+					 new ResponseStatusException(HttpStatus.NOT_FOUND,
+                             "Cliente não encontrado"));
+
+	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

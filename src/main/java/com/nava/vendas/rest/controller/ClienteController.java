@@ -1,15 +1,21 @@
 package com.nava.vendas.rest.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.nava.vendas.domain.entity.Cliente;
 import com.nava.vendas.domain.repository.ClientesRepository;
@@ -25,26 +31,69 @@ public class ClienteController {
 		this.clienteRepository = clienteRepository;
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Cliente> getClienteById( @PathVariable("id") Integer id) {
+//	@GetMapping("/{id}")
+//	public Cliente getClienteById( @PathVariable("id") Integer id) {
+//
+//		return clienteRepository
+//					.findById(id)
+//					.orElseThrow(() -> 
+//					 new ResponseStatusException(HttpStatus.NOT_FOUND,
+//                             "Cliente não encontrado"));
+//
+//	}
 
-		Optional<Cliente> cliente = clienteRepository.findById(id);//esta guardadno o cliente que foi buscado no banco pelo id
-		
-		if (cliente.isPresent()) {//esta verificando se o cliente esta presente no BD
-			return ResponseEntity.ok().body(cliente.get());//como o ResponseEntity esta passando um ok se ele encontrar um cliente ele vai devolver o codigo de status 200 
-		}else {
-			return ResponseEntity.notFound().build();
-		}
-		
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Cliente saveCliente(@RequestBody Cliente cliente){//esta anotado com requestBody pois ele vai receber parametros pelo corpo da requisição
+
+		return clienteRepository.save(cliente);// acessou o repositorio e persistiu na BD
 
 	}
 	
-	@PostMapping
-	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente){//esta anotado com requestBody pois ele vai receber parametros pelo corpo da requisição
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete( @PathVariable Integer id ){
+    	
+        clienteRepository.findById(id)
+                .map( cliente -> {
+                    clienteRepository.delete(cliente );
+                    return cliente;
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Cliente não encontrado") );
+
+    }
+	
+	@PutMapping("/{id}")
+	 @ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateCliente(@RequestBody Cliente cliente, 
+												@PathVariable("id") Integer id){
 		
-		Cliente clieenteSalvo = clienteRepository.save(cliente);//acessou o repositorio e persistiu na BD
-		return ResponseEntity.ok(clieenteSalvo);
+		clienteRepository
+				.findById(id).map(clienteExistente ->{
+					cliente.setId(clienteExistente.getId());
+					clienteRepository.save(cliente);
+					return clienteExistente;
+				}).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Cliente não encontrado") );
 		
 	}
+	
+	@GetMapping
+	public List<Cliente> find( Cliente filtro) {
+		
+		ExampleMatcher matcher = ExampleMatcher
+									.matching()
+									.withIgnoreCase()
+									.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);//qualquer lugar que ele encontrar a String ele vai retornar talvez funcione para alto complete
+		Example example = Example.of(filtro,matcher);
+		return clienteRepository.findAll(example);
+		
+	}
+	
+ 
 
 }
+
+
+

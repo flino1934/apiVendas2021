@@ -2,6 +2,7 @@ package com.nava.vendas.service.rest.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class PedidoServiceImpl implements PedidoService{
 
 	@Override
 	@Transactional//vai garantir a integridade do pedido caso ocorra algum erro acontecera um rollback
-	public Pedido salvar(PedidoDto dto) {
+	public Pedido salvar(PedidoDto dto) {//esse metodo depende de converterItems()
 		Integer idCliente = dto.getCliente();//vai pegar o id do cliente 
 		Cliente cliente = 
 				clientesRepository.findById(idCliente).orElseThrow( () -> new RegraNegocioExcption("Código de cliente invalido"));
@@ -62,7 +63,7 @@ public class PedidoServiceImpl implements PedidoService{
 		return pedido;
 	}
 	
-	private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDto> items) {
+	private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDto> items) {//esse metodo é um metodo auxliar de salvar que esta acima
 		
 		if (items.isEmpty()) {//vai verificar se a lista está vazia caso esteja vazia vai retornar erro
 			
@@ -85,6 +86,12 @@ public class PedidoServiceImpl implements PedidoService{
 					return itemPedido;
 				}).collect(Collectors.toList());
 		
+	}
+
+	@Override
+	public Optional<Pedido> obterPedidoCompleto(Integer id) {//vai obter o pedido completo (pedido, itens pedido, produto) esse metodo implementa a classe PedidoService
+
+		return pedidoRepository.findByIdFetchItens(id);
 	}
 
 }

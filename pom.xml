@@ -49,6 +49,12 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -59,5 +65,8 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
+
 
 </project>

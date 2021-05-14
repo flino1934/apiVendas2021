@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ApiErrors {
 
-	private List<String> errors;
+	private List<String> errors;///vai armazenar a pilha de erros e devolver para ApplicationControlerAdvice
 
 	public ApiErrors() {
 		// TODO Auto-generated constructor stub

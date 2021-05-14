@@ -17,6 +17,7 @@ import com.nava.vendas.domain.repository.ClientesRepository;
 import com.nava.vendas.domain.repository.ItemsPedidosRepository;
 import com.nava.vendas.domain.repository.PedidoRepository;
 import com.nava.vendas.domain.repository.ProdutosRepository;
+import com.nava.vendas.exception.PedidoNaoEncontradoException;
 import com.nava.vendas.exception.RegraNegocioExcption;
 import com.nava.vendas.rest.dto.ItemPedidoDto;
 import com.nava.vendas.rest.dto.PedidoDto;
@@ -94,6 +95,18 @@ public class PedidoServiceImpl implements PedidoService{
 	public Optional<Pedido> obterPedidoCompleto(Integer id) {//vai obter o pedido completo (pedido, itens pedido, produto) esse metodo implementa a classe PedidoService
 
 		return pedidoRepository.findByIdFetchItens(id);
+	}
+
+	@Override
+	@Transactional
+	public void atualizaStatus(Integer id, StatusPedido status) {//esse metodo implementa a classe PedidoService
+		
+		 pedidoRepository
+				.findById(id)
+				.map( pedido ->{
+					pedido.setStatus(status);
+					return pedidoRepository.save(pedido);
+				}).orElseThrow(() -> new PedidoNaoEncontradoException());
 	}
 
 }

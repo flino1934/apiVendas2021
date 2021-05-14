@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.nava.vendas.domain.entity.ItemPedido;
 import com.nava.vendas.domain.entity.Pedido;
+import com.nava.vendas.domain.enums.StatusPedido;
+import com.nava.vendas.rest.dto.AtualizacaoStatusDto;
 import com.nava.vendas.rest.dto.InformacaoItemPedidoDto;
 import com.nava.vendas.rest.dto.InformacoesPedidoDto;
 import com.nava.vendas.rest.dto.PedidoDto;
@@ -87,5 +90,16 @@ public class PedidoController {
         ).collect(Collectors.toList());
     }
 	
+    @PatchMapping("/{id}")//utilizamos esse verbo para atualizar apenas uma parte ja o put ele vai querer todos os parametros oq daria muito trabalho
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus( @PathVariable("id") Integer id,@RequestBody AtualizacaoStatusDto dto) {// esta chamando da classe PedidoService que é implementada pela classe PedidoServiceImpl
+    	
+    	String novoStatus = dto.getNovoStatus();// vai armazenar o novo status que vem da classe AtualizacaoStatusDto esta entrando na classe e pegando pelo metodo get 
+    	
+    	pedidoService.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
+    	
+    }
+    
+    
 	
 }

@@ -2,6 +2,8 @@ package com.nava.vendas.rest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -44,7 +46,7 @@ public class ClienteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente saveCliente(@RequestBody Cliente cliente){//esta anotado com requestBody pois ele vai receber parametros pelo corpo da requisição
+	public Cliente saveCliente(@RequestBody @Valid Cliente cliente){//esta anotado com requestBody pois ele vai receber parametros pelo corpo da requisição
 
 		return clienteRepository.save(cliente);// acessou o repositorio e persistiu na BD
 
@@ -66,7 +68,7 @@ public class ClienteController {
 	
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateCliente(@RequestBody Cliente cliente, 
+	public void updateCliente( @Valid @RequestBody Cliente cliente, 
 												@PathVariable("id") Integer id){
 		
 		clienteRepository

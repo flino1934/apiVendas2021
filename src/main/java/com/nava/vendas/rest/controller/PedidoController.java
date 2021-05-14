@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -42,7 +44,7 @@ public class PedidoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Integer save(@RequestBody PedidoDto dto) {//vai retornar apenas o id do codigo gerado
+	public Integer save(@RequestBody @Valid PedidoDto dto) {//vai retornar apenas o id do codigo gerado
 		
 		Pedido pedido = pedidoService.salvar(dto);
 		return pedido.getId();// vai retornar o id do pedido, toda a lógica do pedido está dentro do service
@@ -92,7 +94,7 @@ public class PedidoController {
 	
     @PatchMapping("/{id}")//utilizamos esse verbo para atualizar apenas uma parte ja o put ele vai querer todos os parametros oq daria muito trabalho
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateStatus( @PathVariable("id") Integer id,@RequestBody AtualizacaoStatusDto dto) {// esta chamando da classe PedidoService que é implementada pela classe PedidoServiceImpl
+    public void updateStatus( @PathVariable("id") Integer id,@RequestBody @Valid AtualizacaoStatusDto dto) {// esta chamando da classe PedidoService que é implementada pela classe PedidoServiceImpl
     	
     	String novoStatus = dto.getNovoStatus();// vai armazenar o novo status que vem da classe AtualizacaoStatusDto esta entrando na classe e pegando pelo metodo get 
     	

@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,9 +24,12 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	@Column(name = "nome", length = 100)
+	@NotEmpty(message = "Campo nome obrigatório")//vai verificar se ela é uma string vazia ou se não esta sendo nula
 	private String nome;
 	
 	@Column(length = 11)
+	@NotEmpty(message = "Campo cpf obrigatório")//vai verificar se ela é uma string vazia ou se não esta sendo nula
+	@CPF(message = "Informe um CPF valido")
 	private String cpf;
 	
 	@OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY)//Relacionamento um para muitos pois um cliente tem varios pedidos (1*n)

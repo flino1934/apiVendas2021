@@ -3,10 +3,15 @@ package com.nava.vendas.rest.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 public class PedidoDto {
 
+	@NotNull(message = "Informe o codigo do cliente")
 	private Integer cliente;// vai ser o id do cliente
+	@NotNull(message =  "Informe o total do pedido")
 	private BigDecimal total;
+	
 	private List<ItemPedidoDto> items;
 
 	public PedidoDto() {

@@ -2,6 +2,8 @@ package com.nava.vendas.rest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.nava.vendas.domain.entity.Cliente;
 import com.nava.vendas.domain.entity.Produto;
 import com.nava.vendas.domain.repository.ProdutosRepository;
 
@@ -36,7 +37,7 @@ public class ProdutoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Produto saveProduto(@RequestBody Produto produto) {
+	public Produto saveProduto(@RequestBody @Valid Produto produto) {
 
 		return produtoRepository.save(produto);//vai acessar a BD e salvar o produto
 
@@ -67,8 +68,8 @@ public class ProdutoController {
 	}
 	
 	@PutMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateProduto( @RequestBody Produto produto, @PathVariable("id") Integer id) {
+	@ResponseStatus( HttpStatus.NO_CONTENT)
+	public void updateProduto(  @RequestBody @Valid Produto produto, @PathVariable("id") Integer id) {
 		
 		produtoRepository.findById(id).map( produtoExistente->{
 			produto.setId(produtoExistente.getId());

@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.nava.vendas.domain.enums.StatusPedido;
 
 @Entity
 @Table(name = "tb_pedido")
@@ -30,6 +34,9 @@ public class Pedido {
 	private LocalDate dataPedido;
 	private BigDecimal total;
 
+	@Enumerated(EnumType.STRING)//Com essa anotation ele vai passar como string no BD e não como enumerado tipo 1,2,3...
+	private StatusPedido status;
+
 	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens;
 
@@ -37,11 +44,14 @@ public class Pedido {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pedido(Integer id, Cliente cliente, LocalDate dataPedido, BigDecimal total, List<ItemPedido> itens) {
+	public Pedido(Integer id, Cliente cliente, LocalDate dataPedido, BigDecimal total, StatusPedido status,
+			List<ItemPedido> itens) {
+
 		this.id = id;
 		this.cliente = cliente;
 		this.dataPedido = dataPedido;
 		this.total = total;
+		this.status = status;
 		this.itens = itens;
 	}
 
@@ -77,6 +87,14 @@ public class Pedido {
 		this.total = total;
 	}
 
+	public StatusPedido getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusPedido status) {
+		this.status = status;
+	}
+
 	public List<ItemPedido> getItens() {
 		return itens;
 	}
@@ -84,6 +102,8 @@ public class Pedido {
 	public void setItens(List<ItemPedido> itens) {
 		this.itens = itens;
 	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -93,6 +113,7 @@ public class Pedido {
 		result = prime * result + ((dataPedido == null) ? 0 : dataPedido.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((itens == null) ? 0 : itens.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
 		return result;
 	}
@@ -125,6 +146,11 @@ public class Pedido {
 			if (other.itens != null)
 				return false;
 		} else if (!itens.equals(other.itens))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
 			return false;
 		if (total == null) {
 			if (other.total != null)

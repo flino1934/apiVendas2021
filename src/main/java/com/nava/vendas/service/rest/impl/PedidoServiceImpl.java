@@ -12,6 +12,7 @@ import com.nava.vendas.domain.entity.Cliente;
 import com.nava.vendas.domain.entity.ItemPedido;
 import com.nava.vendas.domain.entity.Pedido;
 import com.nava.vendas.domain.entity.Produto;
+import com.nava.vendas.domain.enums.StatusPedido;
 import com.nava.vendas.domain.repository.ClientesRepository;
 import com.nava.vendas.domain.repository.ItemsPedidosRepository;
 import com.nava.vendas.domain.repository.PedidoRepository;
@@ -53,6 +54,7 @@ public class PedidoServiceImpl implements PedidoService{
 		pedido.setTotal(dto.getTotal());//como o dto que vai ter os dados então será passado pelo dto o total
 		pedido.setDataPedido(LocalDate.now());
 		pedido.setCliente(cliente);
+		pedido.setStatus(StatusPedido.REALIZADO);//toda vez que salvar o pedido ele ja vai estar realizado
 		
 		List<ItemPedido> itemsPedidos = converterItems(pedido, dto.getItems());//quando chegar aqui ele vai descer para o metodo de converter pedido antes de salvar o pedido
 		

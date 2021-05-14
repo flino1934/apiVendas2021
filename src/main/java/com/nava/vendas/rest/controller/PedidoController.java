@@ -68,6 +68,7 @@ public class PedidoController {
 			.cpf(pedido.getCliente().getCpf())
 			.nomeCliente(pedido.getCliente().getNome())
 			.totalPedido(pedido.getTotal())
+			.status(pedido.getStatus().name())//utiliza este metodo name pq ele pe o enum e converte para String
 			.items(converter(pedido.getItens()))//vai depender do metodo de baixo pois em  InformacoesPedidoDto tem uma lista de items que será populada com os dados InformacaoItemPedidoDto
 			.build();
 		

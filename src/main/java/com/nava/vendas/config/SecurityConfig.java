@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/pedidos/**")
 					.hasRole("USER")
 			.and()//volta para raiz
-				.formLogin();//cria a tela de login do SpringSecurity ou eu posso passar o caminho do template de login customizado
+				.httpBasic();//vai permitir que passe as requisições através dos haders vai mostrar um formulario basico
 	}
 
 }

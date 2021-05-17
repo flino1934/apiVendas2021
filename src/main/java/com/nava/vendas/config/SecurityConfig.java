@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.passwordEncoder(passwordEncoder())//esta falando para empacotar
 						.withUser("f.lino")//definiu o usuario como f.lino
 						.password(passwordEncoder().encode("123"))	//definiu a senha 
-						.roles("USER");//são os perfis de usuario
+						.roles("USER","ADMIN");//são os perfis de usuario
 		
 	}
 
@@ -35,11 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()//estamos desabilitando csrf pois ele é para aplicações WEB que tem front End como estamos trabalhando apenas com o statement vamos desabilitar
 			.authorizeRequests()
-			.antMatchers("/api/clientes/**")//estou passando a URL da API
-			//.hasRole("USER"); estou falando quais perfis tem acesso a essa URL
-			.authenticated()//esta falando que qualquer usuaario autenticado terá acesso
-		.and()//volta para raiz
-		.formLogin();//cria a tela de login do SpringSecurity ou eu posso passar o caminho do template de login customizado
+				.antMatchers("/api/clientes/**")//estou passando a URL da API
+					.hasAnyRole("USER","ADMIN") //estou falando quais perfis tem acesso a essa URL são mais de um perfil que tem acesso a esse endpoint
+			//.authenticated()//esta falando que qualquer usuaario autenticado terá acesso
+				.antMatchers("/api/produtos/**")
+					.hasRole("ADMIN")//estou falando que o usuario com perfil USER tem acesso a esse 
+				.antMatchers("/api/pedidos/**")
+					.hasRole("USER")
+			.and()//volta para raiz
+				.formLogin();//cria a tela de login do SpringSecurity ou eu posso passar o caminho do template de login customizado
 	}
 
 }

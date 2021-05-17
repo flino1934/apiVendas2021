@@ -15,17 +15,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 
 		return new BCryptPasswordEncoder();// toda vez que o usuario passar uma senha ele vai gerar um hash diferente da senha
-
-			
+		
 	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {//esse metodo vai gerenciar os objetos de autenticação no contexto do security, aqui será configurado a autenticação exemplo qual vai ser o usuario qual a senha de onde vem 
 		
+		auth.inMemoryAuthentication()//vai armazenar os ddados em memoria
+						.passwordEncoder(passwordEncoder())//esta falando para empacotar
+						.withUser("f.lino")//definiu o usuario como f.lino
+						.password(passwordEncoder().encode("123"))	//definiu a senha 
+						.roles("USER");//são os perfis de usuario
 		
-		
-		
-		super.configure(auth);
 	}
 
 	@Override

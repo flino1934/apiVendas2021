@@ -30,9 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {//Estaá responsavel pela autorização vai ppegar o usuario autenticado e verificar se tem autenticação, vai ver quem tem autorização aonde e ao que 
-		// TODO Auto-generated method stub
-		super.configure(http);
+	protected void configure( HttpSecurity http) throws Exception {//Estaá responsavel pela autorização vai ppegar o usuario autenticado e verificar se tem autenticação, vai ver quem tem autorização aonde e ao que vai configurar as rotas
+	
+		http
+			.csrf().disable()//estamos desabilitando csrf pois ele é para aplicações WEB que tem front End como estamos trabalhando apenas com o statement vamos desabilitar
+			.authorizeRequests()
+			.antMatchers("/api/clientes/**")//estou passando a URL da API
+			//.hasRole("USER"); estou falando quais perfis tem acesso a essa URL
+			.authenticated()//esta falando que qualquer usuaario autenticado terá acesso
+		.and()//volta para raiz
+		.formLogin();//cria a tela de login do SpringSecurity ou eu posso passar o caminho do template de login customizado
 	}
 
 }

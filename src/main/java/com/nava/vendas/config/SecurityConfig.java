@@ -1,5 +1,6 @@
 package com.nava.vendas.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,9 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.nava.vendas.service.rest.impl.UsuarioServiceImpl;
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private UsuarioServiceImpl usuarioService;
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 
@@ -21,11 +27,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {//esse metodo vai gerenciar os objetos de autenticação no contexto do security, aqui será configurado a autenticação exemplo qual vai ser o usuario qual a senha de onde vem 
 		
+		
+		/*ese trecho do código se refere ao usuario em memória não é muito Utilizado
 		auth.inMemoryAuthentication()//vai armazenar os ddados em memoria
-						.passwordEncoder(passwordEncoder())//esta falando para empacotar
+						.passwordEncoder(passwordEncoder())//vai comparar a senha do usuario
 						.withUser("f.lino")//definiu o usuario como f.lino
 						.password(passwordEncoder().encode("123"))	//definiu a senha 
-						.roles("USER","ADMIN");//são os perfis de usuario
+						.roles("USER","ADMIN");//são os perfis de usuario*/
+		
+		auth
+			.userDetailsService(usuarioService)//estou falando que o usuario vai vir de UserDetailService
+			.passwordEncoder(passwordEncoder());//vai comparar a senha do usuario
+		
+		//os usuario serão carregado dentro do UsuarioServiceImpl ja as senhas serão verificadas nesse metodo
+			
 		
 	}
 

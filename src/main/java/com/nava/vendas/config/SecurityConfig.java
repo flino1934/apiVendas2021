@@ -7,9 +7,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.nava.vendas.security.jwt.JwtAuthFilter;
+import com.nava.vendas.security.jwt.Jwtservice;
 import com.nava.vendas.service.rest.impl.UsuarioServiceImpl;
 
 @EnableWebSecurity
@@ -17,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UsuarioServiceImpl usuarioService;
+	@Autowired
+	private Jwtservice jwtService;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -24,6 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();// toda vez que o usuario passar uma senha ele vai gerar um hash diferente da senha
 		
 	}
+	
+	@Bean
+	public OncePerRequestFilter jwtFilter() {
+		return new JwtAuthFilter(jwtService, usuarioService);
+	}
+	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {//esse metodo vai gerenciar os objetos de autenticação no contexto do security, aqui será configurado a autenticação exemplo qual vai ser o usuario qual a senha de onde vem 
@@ -62,7 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.permitAll()
 				.anyRequest().authenticated()	
 			.and()//volta para raiz
-				.httpBasic();//vai permitir que passe as requisições através dos haders vai mostrar um formulario basico
+				//.httpBasic();//vai permitir que passe as requisições através dos haders vai mostrar um formulario basico
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
 }

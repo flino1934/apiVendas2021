@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nava.vendas.domain.entity.Usuario;
 import com.nava.vendas.domain.repository.UsuarioRepository;
+import com.nava.vendas.exception.SenhaInvalidaException;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService{//esta implementando uma interface padrão já existente no java chamada de UserDetailsService
@@ -26,6 +27,17 @@ public class UsuarioServiceImpl implements UserDetailsService{//esta implementan
 		
 		return usuarioRepository.save(usuario);//esta chamando o metodo que vem de usuarioRepository
 		
+	}
+	
+	public UserDetails autenticar(Usuario usuario) {
+		
+		UserDetails user = loadUserByUsername(usuario.getLogin());
+		boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+		
+		if (senhasBatem) {
+			return user;
+		}
+		throw new SenhaInvalidaException();
 	}
 	
 	

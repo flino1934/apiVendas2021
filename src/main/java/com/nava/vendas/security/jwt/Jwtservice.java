@@ -1,4 +1,4 @@
-package com.nava.vendas;
+package com.nava.vendas.security.jwt;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.nava.vendas.VendasApplication;
 import com.nava.vendas.domain.entity.Usuario;
 
 import io.jsonwebtoken.Claims;
@@ -19,7 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class Jwtservice {
 
-	@Value("${security.jwt.expiracao}")
+	@Value("${security.jwt.expiracao}") 
 	private String expiracao;
 	@Value("security.jwt.chave-assinatura")
 	private String chaveAssinatura;

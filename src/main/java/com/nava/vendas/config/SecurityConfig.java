@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//os usuario serão carregado dentro do UsuarioServiceImpl ja as senhas serão verificadas nesse metodo
 			
 		
-	}
+	}//comm a implementação do jwt não havera necessidade de utilizar mais esse metodo será criada uma classe especifica para fazer essa função de filtro
 
 	@Override
 	protected void configure( HttpSecurity http) throws Exception {//Estaá responsavel pela autorização vai ppegar o usuario autenticado e verificar se tem autenticação, vai ver quem tem autorização aonde e ao que vai configurar as rotas

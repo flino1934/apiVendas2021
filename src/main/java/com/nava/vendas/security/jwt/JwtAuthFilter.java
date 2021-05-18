@@ -31,29 +31,30 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest httpServletRequest,
-									HttpServletResponse httpServletResponse,
-									FilterChain filterChain)
-									throws ServletException, IOException {
-							
-		String authorization = httpServletRequest.getHeader("Authorization");
-		
-		if (authorization != null && authorization.startsWith("Bearer")) {
-			String token = authorization.split(" ")[1];// ele vai retirar o Bearer e colocar na posição 0 do vetor e pegar o tokenn e armazenar na posição 1 do vetor 
-			boolean isValid = jwtService.tokenValido(token);// vai pegar o valor do token e dizer se é valido ou não
-			
-			if (isValid) {
-				String loginUsuario = jwtService.obterLoginUsuario(token);
-				UserDetails usuario = usuarioService.loadUserByUsername(loginUsuario);
-				UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(usuario, null,usuario.getAuthorities());
-				user.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-				SecurityContextHolder.getContext().setAuthentication(user);
-			}
+    protected void doFilterInternal(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            FilterChain filterChain) throws ServletException, IOException {
 
-		}
+        String authorization = httpServletRequest.getHeader("Authorization");
 
-		filterChain.doFilter(httpServletRequest, httpServletResponse);
-		
-	}
+        if( authorization != null && authorization.startsWith("Bearer")){
+            String token = authorization.split(" ")[1];
+            boolean isValid = jwtService.tokenValido(token);
+
+            if(isValid){
+                String loginUsuario = jwtService.obterLoginUsuario(token);
+                UserDetails usuario = usuarioService.loadUserByUsername(loginUsuario);
+                UsernamePasswordAuthenticationToken user = new
+                        UsernamePasswordAuthenticationToken(usuario,null,
+                        usuario.getAuthorities());
+                user.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(user);
+            }
+        }
+
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+
+    }
 
 }

@@ -29,7 +29,7 @@ public class UsuarioController {
 	public Usuario salvar( @RequestBody Usuario usuario) {//vai salvar o usuario  esse metodo vai apenas chamar o metodo responsavel que vem de UsuarioServiceImpl
 		
 		String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());//esta criptografando a senha 
-		usuario.setSenha(senhaCriptografada);//pegou asenha criptografada e passou para usuarioServiceImpl pois quando ele solicitar a senha ele vai pegar essa
+		usuario.setSenha(senhaCriptografada);//pegou asenha criptografada e passou para a classe Usuario pois quando usuarioServiceImpl solicitar a senha ele vai pegar essa
 		return usuarioService.salvar(usuario);
 		
 	}

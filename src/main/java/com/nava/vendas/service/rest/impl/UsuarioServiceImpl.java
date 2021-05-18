@@ -48,7 +48,7 @@ public class UsuarioServiceImpl implements UserDetailsService{//esta implementan
 		return User
 					.builder()
 					.username(usuario.getLogin())//vai buscar o login
-					.password(encoder.encode(usuario.getSenha()))//vai buscar a senha incriptografada
+					.password(usuario.getSenha())//vai buscar a senha incriptografada que usuarioControler esta setando na classe Usuario
 					.roles(roles)
 					.build();
 		
